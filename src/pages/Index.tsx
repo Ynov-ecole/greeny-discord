@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Leaf, MessageSquare, Calendar, Users } from "lucide-react";
 import GreenyMascot from "@/components/GreenyMascot";
@@ -60,6 +61,7 @@ const Index = () => {
               description="Conseils IA personnalisés pour adopter de bons gestes écologiques au quotidien."
               icon={<Calendar className="h-6 w-6 text-greeny-500" />}
               className="animate-fade-in-up"
+              linkTo="/tips"
             />
             <FeatureCard 
               title="Système de points"

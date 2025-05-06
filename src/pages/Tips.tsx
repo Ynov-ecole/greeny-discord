@@ -1,13 +1,11 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, MessageSquare, Search, Leaf, Droplets, Zap } from "lucide-react";
+import { ChevronLeft, MessageSquare, Leaf, Droplets, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 
 const Tips = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
   
   // Tips data organized by categories
   const tipCategories = {
@@ -67,19 +65,6 @@ const Tips = () => {
     }
   };
 
-  // Filter tips based on search query
-  const filteredCategories = Object.entries(tipCategories).filter(([key, category]) => {
-    if (!searchQuery) return true;
-    
-    const matchInTitle = category.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchInTips = category.tips.some(tip => 
-      tip.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      tip.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    
-    return matchInTitle || matchInTips;
-  });
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-greeny-50">
       {/* Header Section */}
@@ -105,19 +90,7 @@ const Tips = () => {
       {/* Discord Tips Preview Section */}
       <section className="section py-12 bg-white">
         <div className="container max-w-5xl">
-          {/* Search bar */}
-          <div className="mb-8 max-w-md mx-auto">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Rechercher un conseil écologique..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-greeny-500 focus:border-greeny-500 outline-none"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
+          {/* Removed search bar */}
           
           <div className="bg-[#36393f] rounded-lg shadow-xl overflow-hidden">
             {/* Discord Header */}
@@ -214,51 +187,10 @@ const Tips = () => {
                 </div>
               )}
 
-              {/* Search results when no category is selected but search is active */}
-              {!selectedCategory && searchQuery && (
-                <div className="flex items-start gap-3 animate-fade-in-up">
-                  <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
-                    G
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-greeny-400">Greeny</span>
-                      <span className="text-xs text-gray-400">BOT</span>
-                      <span className="text-xs text-gray-400">Aujourd'hui à 14:35</span>
-                    </div>
-                    <div className="mt-1 text-gray-300 bg-[#2f3136] p-3 rounded-lg">
-                      <p className="font-semibold text-white">🔍 Résultats de recherche pour "{searchQuery}"</p>
-                      
-                      {filteredCategories.length > 0 ? (
-                        <div className="mt-2 space-y-4">
-                          {filteredCategories.map(([key, category]) => (
-                            <div key={key} className="bg-[#40444b] p-3 rounded-md">
-                              <div className="flex items-center gap-2 font-semibold text-white mb-2">
-                                {category.icon}
-                                <span>{category.title}</span>
-                              </div>
-                              
-                              <ul className="space-y-2">
-                                {category.tips.map((tip, index) => (
-                                  <li key={index} className="pl-2 border-l-2 border-greeny-500">
-                                    <p className="font-semibold text-white">{tip.title}</p>
-                                    <p className="text-gray-300 text-sm">{tip.description}</p>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="mt-2 text-gray-300">Aucun résultat trouvé pour "{searchQuery}". Essaie avec un autre terme.</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
+              {/* Removed search results section */}
 
-              {/* Default message when no category is selected and no search */}
-              {!selectedCategory && !searchQuery && (
+              {/* Default message when no category is selected */}
+              {!selectedCategory && (
                 <div className="flex items-start gap-3 animate-fade-in-up">
                   <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
                     G
@@ -271,7 +203,7 @@ const Tips = () => {
                     </div>
                     <div className="mt-1 text-gray-300 bg-[#2f3136] p-3 rounded-lg">
                       <p className="text-white">
-                        Clique sur une catégorie ci-dessus pour voir des conseils ou utilise la barre de recherche pour trouver des conseils spécifiques.
+                        Clique sur une catégorie ci-dessus pour voir des conseils.
                       </p>
                     </div>
                   </div>
