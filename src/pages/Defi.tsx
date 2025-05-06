@@ -121,8 +121,8 @@ const Defi = () => {
                 <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
                   G
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
+                <div className="w-full">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="font-semibold text-greeny-400">Greeny</span>
                     <span className="text-xs text-gray-400">BOT</span>
                     <span className="text-xs text-gray-400">Aujourd'hui à 14:30</span>
@@ -139,22 +139,22 @@ const Defi = () => {
                 <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
                   G
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
+                <div className="w-full">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="font-semibold text-greeny-400">Greeny</span>
                     <span className="text-xs text-gray-400">BOT</span>
                     <span className="text-xs text-gray-400">Aujourd'hui à 14:31</span>
                   </div>
                   <div className="mt-1 text-gray-300 bg-[#2f3136] p-3 rounded-lg">
-                    <p className="font-semibold text-white">{challenges[currentChallenge].title}</p>
+                    <p className="font-semibold text-white break-words">{challenges[currentChallenge].title}</p>
                     <div className="mt-2">
-                      <p>{challenges[currentChallenge].description}</p>
+                      <p className="break-words">{challenges[currentChallenge].description}</p>
                       <div className="mt-4 space-y-2">
-                        <div className="flex items-center">
+                        <div className="flex flex-wrap items-center">
                           <span className="font-semibold text-sm mr-2">Impact:</span>
                           <span className="text-sm text-greeny-400">{challenges[currentChallenge].impact}</span>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex flex-wrap items-center">
                           <span className="font-semibold text-sm mr-2">Difficulté:</span>
                           <span className={`text-sm ${getDifficultyColor(challenges[currentChallenge].difficulty)}`}>
                             {challenges[currentChallenge].difficulty}
@@ -162,7 +162,7 @@ const Defi = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="mt-4 flex gap-3">
+                    <div className="mt-4 flex flex-wrap gap-3">
                       <Button 
                         className="bg-greeny-500 hover:bg-greeny-600 text-white px-4 py-2 rounded-md text-sm"
                         onClick={acceptChallenge}
@@ -186,8 +186,8 @@ const Defi = () => {
                   <div className="w-10 h-10 shrink-0 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
                     U
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
+                  <div className="w-full">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="font-semibold text-white">Utilisateur</span>
                       <span className="text-xs text-gray-400">Aujourd'hui à 14:35</span>
                     </div>
@@ -203,14 +203,14 @@ const Defi = () => {
                                 acceptedChallenge.completed ? "bg-green-900/30 border border-green-700" : "bg-[#2f3136]"
                               }`}
                             >
-                              <div className="flex justify-between items-center">
-                                <div className="flex items-center gap-2">
+                              <div className="flex flex-wrap justify-between items-center">
+                                <div className="flex items-center gap-2 mb-2 sm:mb-0">
                                   {acceptedChallenge.completed && (
                                     <span className="text-green-400">✓</span>
                                   )}
-                                  <span>{challenge.title}</span>
+                                  <span className="break-words">{challenge.title}</span>
                                 </div>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 w-full sm:w-auto justify-end">
                                   {!acceptedChallenge.completed && (
                                     <button 
                                       className="text-xs bg-green-700 hover:bg-green-600 text-white px-2 py-1 rounded"
@@ -242,15 +242,15 @@ const Defi = () => {
                   <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
                     G
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
+                  <div className="w-full">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="font-semibold text-greeny-400">Greeny</span>
                       <span className="text-xs text-gray-400">BOT</span>
                       <span className="text-xs text-gray-400">Aujourd'hui à 14:40</span>
                     </div>
                     <div className="mt-1 text-gray-300 bg-[#2f3136] p-3 rounded-lg">
                       <p className="font-semibold text-white">🎉 Félicitations !</p>
-                      <p className="mt-2">
+                      <p className="mt-2 break-words">
                         Super travail ! Tu as complété {acceptedChallenges.filter(c => c.completed).length} défi(s).
                         Continue comme ça pour gagner plus de points écologiques !
                       </p>
