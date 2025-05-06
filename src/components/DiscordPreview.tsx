@@ -17,7 +17,7 @@ const DiscordPreview: React.FC<DiscordPreviewProps> = ({ className }) => {
       <div className="p-4 space-y-4">
         {/* Bot Message */}
         <div className="flex items-start gap-3">
-          <div className="w-24 h-10 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
+          <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
             G
           </div>
           <div>
@@ -38,7 +38,7 @@ const DiscordPreview: React.FC<DiscordPreviewProps> = ({ className }) => {
         
         {/* User Message */}
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
+          <div className="w-10 h-10 shrink-0 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
             U
           </div>
           <div>
@@ -54,7 +54,7 @@ const DiscordPreview: React.FC<DiscordPreviewProps> = ({ className }) => {
         
         {/* Bot Response */}
         <div className="flex items-start gap-3">
-          <div className="w-12 h-10 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
+          <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
             G
           </div>
           <div>
