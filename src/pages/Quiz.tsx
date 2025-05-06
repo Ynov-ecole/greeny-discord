@@ -9,6 +9,7 @@ const Quiz = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
+  const [answerSelected, setAnswerSelected] = useState<number | null>(null);
 
   // Quiz data
   const quiz = {
@@ -49,19 +50,24 @@ const Quiz = () => {
   };
 
   const handleAnswer = (answerIndex: number) => {
+    if (answerSelected !== null) return; // Empêche de choisir plusieurs réponses
+
+    // Marque la réponse comme sélectionnée
+    setAnswerSelected(answerIndex);
+    
     const newAnswers = [...userAnswers];
     newAnswers[currentStep] = String(answerIndex);
     setUserAnswers(newAnswers);
     
-    if (currentStep < quiz.questions.length - 1) {
-      setTimeout(() => {
+    // Attend un moment pour montrer si la réponse est correcte avant de passer à la question suivante
+    setTimeout(() => {
+      if (currentStep < quiz.questions.length - 1) {
         setCurrentStep(currentStep + 1);
-      }, 500);
-    } else {
-      setTimeout(() => {
+        setAnswerSelected(null);
+      } else {
         setShowResult(true);
-      }, 500);
-    }
+      }
+    }, 1000);
   };
 
   const getScore = () => {
@@ -74,6 +80,11 @@ const Quiz = () => {
     setCurrentStep(0);
     setUserAnswers([]);
     setShowResult(false);
+    setAnswerSelected(null);
+  };
+
+  const isAnswerCorrect = (questionIndex: number, answerIndex: number) => {
+    return quiz.questions[questionIndex].correctAnswer === answerIndex;
   };
 
   return (
@@ -155,18 +166,29 @@ const Quiz = () => {
                     </div>
                     <div className="w-full">
                       <div className="grid grid-cols-1 gap-2 w-full">
-                        {quiz.questions[currentStep].options.map((option, index) => (
-                          <button
-                            key={index}
-                            className={`w-full text-left p-3 rounded-md bg-[#4f545c] hover:bg-[#5d6269] text-gray-200 transition-colors ${
-                              userAnswers[currentStep] === String(index) ? 'bg-greeny-700 hover:bg-greeny-700' : ''
-                            }`}
-                            onClick={() => handleAnswer(index)}
-                            disabled={userAnswers[currentStep] !== undefined}
-                          >
-                            {String.fromCharCode(65 + index)}. {option}
-                          </button>
-                        ))}
+                        {quiz.questions[currentStep].options.map((option, index) => {
+                          const isSelected = answerSelected === index;
+                          const isCorrect = isAnswerCorrect(currentStep, index);
+                          
+                          let buttonClass = "w-full text-left p-3 rounded-md bg-[#4f545c] hover:bg-[#5d6269] text-gray-200 transition-colors";
+                          
+                          if (isSelected) {
+                            buttonClass = isCorrect 
+                              ? "w-full text-left p-3 rounded-md bg-green-700 hover:bg-green-700 text-white transition-colors" 
+                              : "w-full text-left p-3 rounded-md bg-red-700 hover:bg-red-700 text-white transition-colors";
+                          }
+                          
+                          return (
+                            <button
+                              key={index}
+                              className={buttonClass}
+                              onClick={() => handleAnswer(index)}
+                              disabled={answerSelected !== null}
+                            >
+                              {String.fromCharCode(65 + index)}. {option}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -175,38 +197,88 @@ const Quiz = () => {
 
               {/* Results */}
               {showResult && (
-                <div className="flex items-start gap-3 animate-fade-in-up">
-                  <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
-                    G
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-greeny-400">Greeny</span>
-                      <span className="text-xs text-gray-400">BOT</span>
-                      <span className="text-xs text-gray-400">Aujourd'hui à 14:35</span>
+                <>
+                  <div className="flex items-start gap-3 animate-fade-in-up">
+                    <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
+                      G
                     </div>
-                    <div className="mt-1 text-gray-300 bg-[#2f3136] p-3 rounded-lg">
-                      <p className="font-semibold text-white">📊 Résultats</p>
-                      <p className="mt-2">
-                        Tu as obtenu <span className="font-bold text-greeny-400">{getScore()}/{quiz.questions.length}</span> réponses correctes !
-                      </p>
-                      <p className="mt-2">
-                        {getScore() === quiz.questions.length ? 
-                          "🏆 Félicitations ! Tu es un(e) vrai(e) champion(ne) de l'écologie !" : 
-                          getScore() >= quiz.questions.length / 2 ? 
-                          "👍 Pas mal ! Tu as de bonnes connaissances en écologie." : 
-                          "🌱 Continue d'apprendre sur l'écologie pour améliorer ton score."}
-                      </p>
-                      
-                      <button 
-                        className="mt-4 bg-greeny-500 hover:bg-greeny-600 text-white px-4 py-2 rounded-md text-sm"
-                        onClick={resetQuiz}
-                      >
-                        Refaire le quiz
-                      </button>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-greeny-400">Greeny</span>
+                        <span className="text-xs text-gray-400">BOT</span>
+                        <span className="text-xs text-gray-400">Aujourd'hui à 14:35</span>
+                      </div>
+                      <div className="mt-1 text-gray-300 bg-[#2f3136] p-3 rounded-lg">
+                        <p className="font-semibold text-white">📊 Résultats</p>
+                        <p className="mt-2">
+                          Tu as obtenu <span className="font-bold text-greeny-400">{getScore()}/{quiz.questions.length}</span> réponses correctes !
+                        </p>
+                        <p className="mt-2">
+                          {getScore() === quiz.questions.length ? 
+                            "🏆 Félicitations ! Tu es un(e) vrai(e) champion(ne) de l'écologie !" : 
+                            getScore() >= quiz.questions.length / 2 ? 
+                            "👍 Pas mal ! Tu as de bonnes connaissances en écologie." : 
+                            "🌱 Continue d'apprendre sur l'écologie pour améliorer ton score."}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+
+                  {/* Afficher les réponses correctes */}
+                  <div className="flex items-start gap-3 animate-fade-in-up">
+                    <div className="w-10 h-10 shrink-0 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
+                      G
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-greeny-400">Greeny</span>
+                        <span className="text-xs text-gray-400">BOT</span>
+                        <span className="text-xs text-gray-400">Aujourd'hui à 14:36</span>
+                      </div>
+                      <div className="mt-1 text-gray-300 bg-[#2f3136] p-3 rounded-lg">
+                        <p className="font-semibold text-white">📝 Récapitulatif des bonnes réponses</p>
+                        
+                        <div className="mt-4 space-y-4">
+                          {quiz.questions.map((q, qIndex) => (
+                            <div key={qIndex} className="pb-3 border-b border-gray-600">
+                              <p className="font-medium text-white">Question {qIndex + 1}: {q.question}</p>
+                              
+                              <div className="mt-2 space-y-1">
+                                {q.options.map((option, oIndex) => {
+                                  const isCorrect = q.correctAnswer === oIndex;
+                                  const userSelected = Number(userAnswers[qIndex]) === oIndex;
+                                  
+                                  let optionClass = "px-2 py-1 rounded";
+                                  
+                                  if (isCorrect) {
+                                    optionClass += " bg-green-800/30 text-green-400 border border-green-700";
+                                  } else if (userSelected) {
+                                    optionClass += " bg-red-800/30 text-red-400 border border-red-700";
+                                  }
+                                  
+                                  return (
+                                    <div key={oIndex} className={optionClass}>
+                                      {String.fromCharCode(65 + oIndex)}. {option}
+                                      {isCorrect && <span className="ml-2 text-green-400">✓</span>}
+                                      {!isCorrect && userSelected && <span className="ml-2 text-red-400">✗</span>}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <button 
+                          className="mt-6 bg-greeny-500 hover:bg-greeny-600 text-white px-4 py-2 rounded-md text-sm"
+                          onClick={resetQuiz}
+                        >
+                          Refaire le quiz
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
             
