@@ -95,7 +95,7 @@ const Defi = () => {
             </Link>
           </div>
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-5xl font-bold gradient-text mb-4">
+            <h1 className="text-3xl md:text-5xl/normal font-bold gradient-text mb-4">
               Défis Écologiques
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
