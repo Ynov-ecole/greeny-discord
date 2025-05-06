@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 
 interface GreenyMascotProps {
@@ -7,12 +7,36 @@ interface GreenyMascotProps {
 }
 
 const GreenyMascot: React.FC<GreenyMascotProps> = ({ className }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Calculate mouse position relative to the center of the viewport
+      const x = (e.clientX - window.innerWidth / 2) / 50;
+      const y = (e.clientY - window.innerHeight / 2) / 50;
+      
+      setPosition({ x, y });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+  
   return (
-    <img 
-      src="/lovable-uploads/4ff86065-0a20-4160-9be1-640268498c7f.png" 
-      alt="Greeny Mascot" 
-      className={cn("w-full max-w-md", className)}
-    />
+    <div className={cn("relative", className)}>
+      <img 
+        src="/lovable-uploads/4ff86065-0a20-4160-9be1-640268498c7f.png" 
+        alt="Greeny Mascot" 
+        className="w-full max-w-md animate-float"
+        style={{ 
+          transform: `translate(${position.x}px, ${position.y}px)`,
+          transition: 'transform 0.1s ease-out'
+        }}
+      />
+    </div>
   );
 };
 
