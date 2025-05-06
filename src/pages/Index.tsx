@@ -8,7 +8,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-greeny-50">
       {/* Hero Section */}
-      <section className="section min-h-[90vh] flex items-center">
+      <section className="section min-h-[9vh] flex items-center">
         <div className="container grid md:grid-cols-2 gap-12">
           <div className="flex flex-col justify-center">
             <div className="max-w-xl space-y-6">
