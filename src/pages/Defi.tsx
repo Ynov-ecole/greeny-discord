@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Card,
@@ -8,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Leaf, MessageCircle } from "lucide-react";
+import { Leaf, MessageCircle, Check, RefreshCcw, Trash2 } from "lucide-react";
 
 interface Challenge {
   id: number;
@@ -17,6 +16,11 @@ interface Challenge {
   difficulty: "facile" | "moyen" | "difficile";
   impact: string;
   tips: string;
+}
+
+interface AcceptedChallenge extends Challenge {
+  status: "en_cours" | "accompli";
+  dateAccepted: Date;
 }
 
 const challenges: Challenge[] = [
@@ -76,7 +80,15 @@ const DifficultyBadge = ({ difficulty }: { difficulty: Challenge["difficulty"] }
   );
 };
 
-const DiscordChallengeCard = ({ challenge, onAccept }: { challenge: Challenge; onAccept: () => void }) => {
+const DiscordChallengeCard = ({ 
+  challenge, 
+  onAccept, 
+  onSkip 
+}: { 
+  challenge: Challenge; 
+  onAccept: () => void;
+  onSkip: () => void;
+}) => {
   const getEmoji = (difficulty: Challenge["difficulty"]) => {
     const emojiMap = {
       facile: "🍃",
@@ -113,7 +125,15 @@ const DiscordChallengeCard = ({ challenge, onAccept }: { challenge: Challenge; o
             <p className="font-semibold mb-1">✨ Conseils:</p>
             <p>{challenge.tips}</p>
           </div>
-          <div className="mt-4 flex justify-end">
+          <div className="mt-4 flex justify-end gap-3">
+            <Button 
+              variant="outline" 
+              className="border-gray-600 hover:bg-[#4f545c] text-gray-300"
+              onClick={onSkip}
+            >
+              <RefreshCcw className="mr-2 h-4 w-4" />
+              Voir un autre défi
+            </Button>
             <Button 
               className="bg-greeny-500 hover:bg-greeny-600"
               onClick={onAccept}
@@ -127,20 +147,89 @@ const DiscordChallengeCard = ({ challenge, onAccept }: { challenge: Challenge; o
   );
 };
 
+const AcceptedChallengeCard = ({ 
+  challenge, 
+  onComplete, 
+  onDelete 
+}: { 
+  challenge: AcceptedChallenge; 
+  onComplete: () => void; 
+  onDelete: () => void;
+}) => {
+  const getEmoji = (difficulty: Challenge["difficulty"]) => {
+    const emojiMap = {
+      facile: "🍃",
+      moyen: "🌱",
+      difficile: "🌲",
+    };
+    return emojiMap[difficulty];
+  };
+  
+  const formattedDate = new Date(challenge.dateAccepted).toLocaleDateString();
+
+  return (
+    <div className="flex items-start gap-3 mb-4 bg-[#2f3136] p-3 rounded">
+      {challenge.status === "accompli" ? (
+        <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white">
+          <Check size={14} />
+        </div>
+      ) : (
+        <div className="w-6 h-6 rounded-full bg-greeny-500 flex items-center justify-center text-white">
+          <Leaf size={14} />
+        </div>
+      )}
+      <div className="flex-1">
+        <div className="flex items-center gap-2">
+          <span className="font-medium text-white">{getEmoji(challenge.difficulty)} {challenge.title}</span>
+          <DifficultyBadge difficulty={challenge.difficulty} />
+          <span className="text-xs text-gray-400 ml-auto">Accepté le {formattedDate}</span>
+        </div>
+        <p className="text-sm text-gray-300 mt-1">{challenge.description}</p>
+      </div>
+      <div className="flex gap-2">
+        {challenge.status === "en_cours" && (
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className="border-green-600 text-green-500 hover:bg-green-950 hover:text-green-400"
+            onClick={onComplete}
+          >
+            <Check size={16} />
+          </Button>
+        )}
+        <Button 
+          size="sm" 
+          variant="outline" 
+          className="border-red-600 text-red-500 hover:bg-red-950 hover:text-red-400"
+          onClick={onDelete}
+        >
+          <Trash2 size={16} />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 const DefiPage = () => {
   const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
-  const [acceptedChallenges, setAcceptedChallenges] = useState<number[]>([]);
+  const [acceptedChallenges, setAcceptedChallenges] = useState<AcceptedChallenge[]>([]);
 
   const handleAcceptChallenge = () => {
-    setAcceptedChallenges([...acceptedChallenges, challenges[currentChallengeIndex].id]);
+    const currentChallenge = challenges[currentChallengeIndex];
+    
+    // Check if challenge is already accepted
+    if (!acceptedChallenges.some(c => c.id === currentChallenge.id)) {
+      const newAcceptedChallenge: AcceptedChallenge = {
+        ...currentChallenge,
+        status: "en_cours",
+        dateAccepted: new Date()
+      };
+      
+      setAcceptedChallenges([...acceptedChallenges, newAcceptedChallenge]);
+    }
     
     // Move to next challenge
-    if (currentChallengeIndex < challenges.length - 1) {
-      setCurrentChallengeIndex(currentChallengeIndex + 1);
-    } else {
-      // Loop back to start if at the end
-      setCurrentChallengeIndex(0);
-    }
+    handleNextChallenge();
   };
 
   const handleNextChallenge = () => {
@@ -150,6 +239,22 @@ const DefiPage = () => {
       // Loop back to start if at the end
       setCurrentChallengeIndex(0);
     }
+  };
+  
+  const handleCompleteChallenge = (id: number) => {
+    setAcceptedChallenges(
+      acceptedChallenges.map(challenge => 
+        challenge.id === id 
+          ? { ...challenge, status: "accompli" } 
+          : challenge
+      )
+    );
+  };
+  
+  const handleDeleteChallenge = (id: number) => {
+    setAcceptedChallenges(
+      acceptedChallenges.filter(challenge => challenge.id !== id)
+    );
   };
 
   return (
@@ -175,7 +280,41 @@ const DefiPage = () => {
               <DiscordChallengeCard
                 challenge={challenges[currentChallengeIndex]}
                 onAccept={handleAcceptChallenge}
+                onSkip={handleNextChallenge}
               />
+              
+              {/* Accepted Challenges inside the Discord chat */}
+              {acceptedChallenges.length > 0 && (
+                <div className="mt-8 border-t border-[#4f545c] pt-4">
+                  <div className="flex items-center mb-3">
+                    <div className="w-10 h-10 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold mr-3">
+                      G
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-greeny-400">Greeny</span>
+                        <span className="text-xs text-gray-400">BOT</span>
+                        <span className="text-xs text-gray-400">Aujourd'hui à 14:35</span>
+                      </div>
+                      <div className="mt-1 text-gray-300 bg-[#2f3136] p-4 rounded-lg">
+                        <p className="font-semibold text-white mb-3">
+                          🎯 Tes défis en cours
+                        </p>
+                        <div className="space-y-3">
+                          {acceptedChallenges.map(challenge => (
+                            <AcceptedChallengeCard 
+                              key={challenge.id} 
+                              challenge={challenge}
+                              onComplete={() => handleCompleteChallenge(challenge.id)}
+                              onDelete={() => handleDeleteChallenge(challenge.id)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             
             {/* Input Area */}
@@ -186,39 +325,12 @@ const DefiPage = () => {
                   onClick={handleNextChallenge}
                   className="border-gray-600 hover:bg-[#4f545c] text-gray-300"
                 >
+                  <RefreshCcw className="mr-2 h-4 w-4" />
                   Voir un autre défi
                 </Button>
               </div>
             </div>
           </div>
-
-          {acceptedChallenges.length > 0 && (
-            <div className="bg-[#36393f] rounded-lg shadow-lg overflow-hidden">
-              <div className="bg-[#2f3136] p-3">
-                <div className="text-white font-medium flex items-center">
-                  <Leaf className="h-5 w-5 text-greeny-500 mr-2" />
-                  Défis acceptés ({acceptedChallenges.length})
-                </div>
-              </div>
-              
-              <div className="p-4 space-y-3">
-                {acceptedChallenges.map((id) => {
-                  const challenge = challenges.find(c => c.id === id);
-                  if (!challenge) return null;
-                  
-                  return (
-                    <div key={id} className="flex items-start gap-2 bg-[#2f3136] p-3 rounded">
-                      <Leaf className="h-5 w-5 text-greeny-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <span className="font-medium text-white">{challenge.title}</span>
-                        <p className="text-sm text-gray-400">{challenge.description}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
