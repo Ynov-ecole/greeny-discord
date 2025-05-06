@@ -100,7 +100,7 @@ export default {
 				},
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-10px)' },
+					'50%': { transform: 'translateY(-25px)' },
 				},
 				'fade-in-up': {
 					'0%': { opacity: '0', transform: 'translateY(20px)' },
