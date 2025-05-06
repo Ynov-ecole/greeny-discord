@@ -168,7 +168,11 @@ const Index = () => {
               <h3 className="text-xl font-bold mb-4">Liens</h3>
               <ul className="space-y-2">
                 <li><a href="#" className="text-gray-400 hover:text-greeny-400 transition-colors">GitHub</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-greeny-400 transition-colors">Contact</a></li>
+                <li>
+                  <Link to="/contact" className="text-gray-400 hover:text-greeny-400 transition-colors">
+                    Contact
+                  </Link>
+                </li>
                 <li>
                   <Link to="/mentions-legales" className="text-gray-400 hover:text-greeny-400 transition-colors">
                     Mentions légales
