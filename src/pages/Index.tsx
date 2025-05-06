@@ -48,7 +48,6 @@ const Index = () => {
               description="Défis écologiques quotidiens pour sensibiliser ta communauté aux gestes verts."
               icon={<Leaf className="h-6 w-6 text-greeny-500" />}
               className="animate-fade-in-up"
-              linkTo="/defi"
             />
             <FeatureCard 
               title="/quiz"
