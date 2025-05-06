@@ -46,7 +46,7 @@ const Index = () => {
               et sensibiliser ta communauté.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <FeatureCard
               title="/impact"
               description="Mesure ton empreinte écologique et ton impact sur Discord en temps réel."
@@ -60,14 +60,6 @@ const Index = () => {
               icon={<Calendar className="h-6 w-6 text-greeny-500" />}
               className="animate-fade-in-up"
               linkTo="/tips"
-            />
-
-            <FeatureCard
-              title="/quiz"
-              description="Quiz interactifs pour tester et améliorer les connaissances écologiques de ton serveur."
-              icon={<MessageSquare className="h-6 w-6 text-greeny-500" />}
-              className="animate-fade-in-up"
-              linkTo="/quiz"
             />
             <FeatureCard
               title="/défi"

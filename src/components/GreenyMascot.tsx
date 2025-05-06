@@ -28,7 +28,7 @@ const GreenyMascot: React.FC<GreenyMascotProps> = ({ className }) => {
   return (
     <div className={cn("relative", className)}>
       <img 
-        src="/lovable-uploads/greeny-no-bg.png" 
+        src="/lovable-uploads/greeny-removebg.png" 
         alt="Greeny Mascot" 
         className="w-full max-w-md"
         style={{ 
