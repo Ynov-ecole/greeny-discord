@@ -1,8 +1,10 @@
+
 import { Button } from "@/components/ui/button";
 import { Leaf, MessageSquare, Calendar, Users } from "lucide-react";
 import GreenyMascot from "@/components/GreenyMascot";
 import FeatureCard from "@/components/FeatureCard";
 import DiscordPreview from "@/components/DiscordPreview";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -167,7 +169,11 @@ const Index = () => {
               <ul className="space-y-2">
                 <li><a href="#" className="text-gray-400 hover:text-greeny-400 transition-colors">GitHub</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-greeny-400 transition-colors">Contact</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-greeny-400 transition-colors">Mentions légales</a></li>
+                <li>
+                  <Link to="/mentions-legales" className="text-gray-400 hover:text-greeny-400 transition-colors">
+                    Mentions légales
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
