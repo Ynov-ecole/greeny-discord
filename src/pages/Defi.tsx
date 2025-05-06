@@ -4,12 +4,11 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Leaf } from "lucide-react";
+import { Leaf, MessageCircle } from "lucide-react";
 
 interface Challenge {
   id: number;
@@ -77,37 +76,54 @@ const DifficultyBadge = ({ difficulty }: { difficulty: Challenge["difficulty"] }
   );
 };
 
-const ChallengeCard = ({ challenge, onAccept }: { challenge: Challenge; onAccept: () => void }) => {
+const DiscordChallengeCard = ({ challenge, onAccept }: { challenge: Challenge; onAccept: () => void }) => {
+  const getEmoji = (difficulty: Challenge["difficulty"]) => {
+    const emojiMap = {
+      facile: "🍃",
+      moyen: "🌱",
+      difficile: "🌲",
+    };
+    return emojiMap[difficulty];
+  };
+
   return (
-    <Card className="w-full shadow-lg border-greeny-100 hover:border-greeny-200 transition-all">
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-xl font-bold">{challenge.title}</CardTitle>
-          <DifficultyBadge difficulty={challenge.difficulty} />
+    <div className="flex items-start gap-3 mb-6">
+      <div className="w-10 h-10 rounded-full bg-greeny-500 flex items-center justify-center text-white font-bold">
+        G
+      </div>
+      <div className="flex-1">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-greeny-400">Greeny</span>
+          <span className="text-xs text-gray-400">BOT</span>
+          <span className="text-xs text-gray-400">Aujourd'hui à 14:30</span>
         </div>
-        <CardDescription className="text-gray-600">{challenge.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div>
-            <h4 className="font-semibold text-gray-700">Impact</h4>
-            <p className="text-sm text-gray-600">{challenge.impact}</p>
+        <div className="mt-1 text-gray-300 bg-[#2f3136] p-4 rounded-lg">
+          <div className="flex justify-between items-center">
+            <p className="font-semibold text-white">
+              {getEmoji(challenge.difficulty)} Défi: {challenge.title}
+            </p>
+            <DifficultyBadge difficulty={challenge.difficulty} />
           </div>
-          <div>
-            <h4 className="font-semibold text-gray-700">Conseils</h4>
-            <p className="text-sm text-gray-600">{challenge.tips}</p>
+          <p className="mt-2 text-gray-300">{challenge.description}</p>
+          <div className="mt-3 bg-[#4f545c] rounded p-2 text-sm">
+            <p className="font-semibold mb-1">💡 Impact:</p>
+            <p>{challenge.impact}</p>
+          </div>
+          <div className="mt-3 bg-[#4f545c] rounded p-2 text-sm">
+            <p className="font-semibold mb-1">✨ Conseils:</p>
+            <p>{challenge.tips}</p>
+          </div>
+          <div className="mt-4 flex justify-end">
+            <Button 
+              className="bg-greeny-500 hover:bg-greeny-600"
+              onClick={onAccept}
+            >
+              Relever ce défi
+            </Button>
           </div>
         </div>
-      </CardContent>
-      <CardFooter>
-        <Button 
-          className="w-full bg-greeny-500 hover:bg-greeny-600"
-          onClick={onAccept}
-        >
-          Relever ce défi
-        </Button>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 };
 
@@ -140,56 +156,67 @@ const DefiPage = () => {
     <div className="min-h-screen bg-greeny-50">
       <div className="container py-12">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <h1 className="text-4xl font-bold gradient-text mb-4">Défis écologiques</h1>
             <p className="text-gray-600 max-w-xl mx-auto">
               Relève des défis quotidiens pour adopter des habitudes plus écologiques et mesurer ton impact sur l'environnement.
             </p>
           </div>
 
-          <div className="mb-8">
-            <ChallengeCard 
-              challenge={challenges[currentChallengeIndex]} 
-              onAccept={handleAcceptChallenge} 
-            />
-          </div>
-
-          <div className="flex justify-between items-center">
-            <Button 
-              variant="outline" 
-              onClick={handleNextChallenge}
-              className="border-greeny-200 hover:bg-greeny-50"
-            >
-              Voir un autre défi
-            </Button>
-
-            <div className="flex items-center gap-2">
-              <Leaf className="h-5 w-5 text-greeny-500" />
-              <span className="text-sm text-gray-600">
-                {acceptedChallenges.length} {acceptedChallenges.length === 1 ? "défi relevé" : "défis relevés"}
-              </span>
+          <div className="bg-[#36393f] rounded-lg shadow-lg overflow-hidden mb-8">
+            {/* Discord Header */}
+            <div className="bg-[#2f3136] p-3 flex items-center">
+              <MessageCircle className="h-5 w-5 text-gray-400 mr-2" />
+              <div className="text-white font-medium"># défis-écologiques</div>
+            </div>
+            
+            {/* Messages Container */}
+            <div className="p-4 space-y-2">
+              <DiscordChallengeCard
+                challenge={challenges[currentChallengeIndex]}
+                onAccept={handleAcceptChallenge}
+              />
+            </div>
+            
+            {/* Input Area */}
+            <div className="bg-[#40444b] p-4">
+              <div className="bg-[#2f3136] rounded-lg flex items-center p-2">
+                <Button 
+                  variant="outline" 
+                  onClick={handleNextChallenge}
+                  className="border-gray-600 hover:bg-[#4f545c] text-gray-300"
+                >
+                  Voir un autre défi
+                </Button>
+              </div>
             </div>
           </div>
 
           {acceptedChallenges.length > 0 && (
-            <div className="mt-12 p-6 bg-white rounded-lg shadow-md border border-greeny-100">
-              <h2 className="text-xl font-bold mb-4">Mes défis acceptés</h2>
-              <ul className="space-y-3">
+            <div className="bg-[#36393f] rounded-lg shadow-lg overflow-hidden">
+              <div className="bg-[#2f3136] p-3">
+                <div className="text-white font-medium flex items-center">
+                  <Leaf className="h-5 w-5 text-greeny-500 mr-2" />
+                  Défis acceptés ({acceptedChallenges.length})
+                </div>
+              </div>
+              
+              <div className="p-4 space-y-3">
                 {acceptedChallenges.map((id) => {
                   const challenge = challenges.find(c => c.id === id);
                   if (!challenge) return null;
                   
                   return (
-                    <li key={id} className="flex items-start gap-2">
-                      <Leaf className="h-5 w-5 text-greeny-500 mt-1" />
+                    <div key={id} className="flex items-start gap-2 bg-[#2f3136] p-3 rounded">
+                      <Leaf className="h-5 w-5 text-greeny-500 mt-1 flex-shrink-0" />
                       <div>
-                        <span className="font-medium">{challenge.title}</span>
-                        <p className="text-sm text-gray-600">{challenge.description}</p>
+                        <span className="font-medium text-white">{challenge.title}</span>
+                        <p className="text-sm text-gray-400">{challenge.description}</p>
                       </div>
-                    </li>
+                    </div>
                   );
                 })}
-              </ul>
+              </div>
             </div>
           )}
         </div>
