@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Leaf, MessageSquare, Calendar, Users, BarChart } from "lucide-react";
 import GreenyMascot from "@/components/GreenyMascot";
@@ -23,6 +24,7 @@ const Index = () => {
               <Button
                 size="lg"
                 className="bg-greeny-500 hover:bg-greeny-600 text-white rounded-full px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
+                onClick={() => window.open("https://github.com/Ynov-ecole/greeny-discord", "_blank")}
               >
                 Ajouter Greeny à mon serveur
               </Button>
@@ -187,6 +189,7 @@ const Index = () => {
           <Button
             size="lg"
             className="bg-greeny-500 hover:bg-greeny-600 text-white rounded-full px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
+            onClick={() => window.open("https://github.com/Ynov-ecole/greeny-discord", "_blank")}
           >
             Inviter Greeny sur Discord
           </Button>
