@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Leaf, MessageSquare, Calendar, Users } from "lucide-react";
 import GreenyMascot from "@/components/GreenyMascot";
@@ -54,6 +53,7 @@ const Index = () => {
               description="Quiz interactifs pour tester et améliorer les connaissances écologiques de ton serveur."
               icon={<MessageSquare className="h-6 w-6 text-greeny-500" />}
               className="animate-fade-in-up"
+              linkTo="/quiz"
             />
             <FeatureCard 
               title="/tip"
@@ -71,7 +71,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Why Greeny Section */}
+      {/* Why Greeny Section & CTA Section */}
       <section className="section bg-gradient-to-br from-greeny-50 to-greeny-100">
         <div className="container">
           <div className="flex flex-col md:flex-row gap-12 items-center">
