@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Leaf, MessageSquare, Calendar, Users } from "lucide-react";
+import { Leaf, MessageSquare, Calendar, Users, BarChart } from "lucide-react";
 import GreenyMascot from "@/components/GreenyMascot";
 import FeatureCard from "@/components/FeatureCard";
 import DiscordPreview from "@/components/DiscordPreview";
@@ -42,7 +42,7 @@ const Index = () => {
               Découvre comment Greeny peut rendre ton serveur Discord plus écolo et sensibiliser ta communauté.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
             <FeatureCard 
               title="/défi"
               description="Défis écologiques quotidiens pour sensibiliser ta communauté aux gestes verts."
@@ -63,6 +63,13 @@ const Index = () => {
               icon={<Calendar className="h-6 w-6 text-greeny-500" />}
               className="animate-fade-in-up"
               linkTo="/tips"
+            />
+            <FeatureCard 
+              title="/impact"
+              description="Mesure ton empreinte écologique et ton impact sur Discord en temps réel."
+              icon={<BarChart className="h-6 w-6 text-greeny-500" />}
+              className="animate-fade-in-up"
+              linkTo="/impact"
             />
             <FeatureCard 
               title="Système de points"

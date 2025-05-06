@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import Quiz from "./pages/Quiz";
 import Tips from "./pages/Tips";
 import Defi from "./pages/Defi";
+import Impact from "./pages/Impact";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/tips" element={<Tips />} />
           <Route path="/defi" element={<Defi />} />
+          <Route path="/impact" element={<Impact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
