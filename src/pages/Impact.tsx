@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 
 const Impact = () => {
-  const [username, setUsername] = useState("EcoWarrior42");
+  const [username, setUsername] = useState("Utilisateur");
   const [messageCount, setMessageCount] = useState(325);
   const [fileCount, setFileCount] = useState(12);
   const [energyUsage, setEnergyUsage] = useState(0.87);
