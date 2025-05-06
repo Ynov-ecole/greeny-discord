@@ -27,7 +27,8 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon, cla
       <Link 
         to={linkTo}
         className={cn(
-          "block bg-white rounded-xl p-6 shadow-lg border border-greeny-100 hover:shadow-xl transition-shadow duration-300 hover:border-greeny-200",
+          "block bg-white rounded-xl p-6 shadow-lg border border-greeny-100 hover:shadow-xl transition-all duration-300",
+          "hover:bg-greeny-50 hover:-translate-y-2 hover:border-greeny-300",
           className
         )}
       >
@@ -39,7 +40,8 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon, cla
   return (
     <div 
       className={cn(
-        "bg-white rounded-xl p-6 shadow-lg border border-greeny-100 hover:shadow-xl transition-shadow duration-300 hover:border-greeny-200",
+        "bg-white rounded-xl p-6 shadow-lg border border-greeny-100 hover:shadow-xl transition-all duration-300",
+        "hover:bg-greeny-50 hover:-translate-y-2 hover:border-greeny-300",
         className
       )}
     >
