@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { Leaf, MessageSquare, Calendar, Users } from "lucide-react";
-import RobotMascot from "@/components/RobotMascot";
+import GreenyMascot from "@/components/GreenyMascot";
 import FeatureCard from "@/components/FeatureCard";
 import DiscordPreview from "@/components/DiscordPreview";
 
@@ -25,7 +24,7 @@ const Index = () => {
             </div>
           </div>
           <div className="flex items-center justify-center">
-            <RobotMascot className="w-full max-w-md animate-float" />
+            <GreenyMascot className="w-full max-w-md animate-float" />
           </div>
         </div>
       </section>
