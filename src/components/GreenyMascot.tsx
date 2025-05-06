@@ -30,7 +30,7 @@ const GreenyMascot: React.FC<GreenyMascotProps> = ({ className }) => {
       <img 
         src="/lovable-uploads/4ff86065-0a20-4160-9be1-640268498c7f.png" 
         alt="Greeny Mascot" 
-        className="w-full max-w-md animate-float"
+        className="w-full max-w-md"
         style={{ 
           transform: `translate(${position.x}px, ${position.y}px)`,
           transition: 'transform 0.1s ease-out'
